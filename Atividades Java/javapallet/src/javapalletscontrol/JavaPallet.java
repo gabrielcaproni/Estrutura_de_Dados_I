@@ -7,7 +7,7 @@ package javapalletscontrol;
 
 /**
  *
- * @author mefma
+ * @author Gabriel Caproni Pegoraro
  */
 public class JavaPallet {
 

@@ -181,7 +181,12 @@ public class FormSistema extends javax.swing.JFrame {
      }// fim funcao
     
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-       // INSERIR PALLET NA PILHA
+       Produto meuProduto = new Produto();
+       meuProduto.setDescricao(txtProduto.getText());
+       meuProduto.setQuantidade(Integer.parseInt( txtQtd.getText()));// Convertendo String em Inteiro 
+       minhaPilha.push(meuProduto);
+       mostraPilha(minhaPilha, listAux);
+               
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
@@ -189,10 +194,15 @@ public class FormSistema extends javax.swing.JFrame {
         while(!minhaPilha.isEmpty()){
           p = minhaPilha.peek();
           if(p.getDescricao().equals(txtProduto.getText())){
-              //p = minhaPilha.pop();
-              // Testar se a quantidade é o que quero remover
-              // Se for > = pop apenas - fala que removeu tudo
-              //se for < = decrementa do p.getQtd a quantidade da caixa de texto
+            p = minhaPilha.pop();
+            if(p.getQuantidade() > Integer.parseInt(txtQtd.getText())){
+                JOptionPane.showMessageDialog(null, "Produto removido.");
+            }else{
+                
+            } 
+              
+            
+             //for < = decrementa do p.getQtd a quantidade da caixa de texto
               // e devolve - push(p)
               JOptionPane.showMessageDialog(null, "Encontrado");
               mostraPilha(minhaPilha, listPilha);
@@ -200,6 +210,8 @@ public class FormSistema extends javax.swing.JFrame {
           }// fim if equals
           else{
               // MOVER PARA PILHA AUXILIAR
+              pilhaAuxiliar.push(minhaPilha.pop());
+              JOptionPane.showMessageDialog(rootPane, "Movido para auxiliar: ");
               mostraPilha(minhaPilha, listPilha);
               mostraPilha(pilhaAuxiliar, listAux);
           }// fim else remove 

@@ -17,4 +17,20 @@ class Fila{
         return valor;
     }
 
-}
+    isEmpty(){
+       /* if(this.itens.length == 0)
+            return true;
+        else 
+            return false;*/
+          return this.itens.length === 0;
+    
+    }
+
+    toString(){
+        return this.itens.toString();
+    }
+
+    first(){
+        return this.itens[0];
+    }
+}// Fim classe

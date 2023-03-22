@@ -1,15 +1,23 @@
 
 package javapalletscontrol;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
+
 public class FormSistema extends javax.swing.JFrame {
     Stack<Produto> minhaPilha = new Stack<>();
     Stack<Produto> pilhaAuxiliar = new Stack<>();
     
     public FormSistema() {
         initComponents();
+        carregar();
+        mostraPilha(minhaPilha, listPilha);
     }
 
 
@@ -176,48 +184,95 @@ public class FormSistema extends javax.swing.JFrame {
 
      void mostraPilha(Stack<Produto> pilha, JTextArea meuList){
         meuList.setText("");
-        for(Produto p:pilha)
+        for(Produto p:pilha) {
             meuList.append(p + "\n");
+        }
      }// fim funcao
+     
+    public void salvar(){
+        String nomeArquivo = "produtos.txt";
+        try(FileWriter grava = new FileWriter(nomeArquivo)) {
+            for(Produto produto:minhaPilha) {
+                grava.write(produto.getDescricao()+ "," +produto.getQuantidade() + "\n");
+            }
+            JOptionPane.showMessageDialog(null ,"Dados salvos com sucesso.");
+        }catch(IOException e) {
+            JOptionPane.showMessageDialog(null, "Não foi possível salvar os dados!");
+        }
+    }
+    
+    public void carregar() {
+        String nomeArquivo = "produtos.txt";
+        try(Scanner leitor = new Scanner(new File(nomeArquivo), "UTF-8")) {
+            while(leitor.hasNextLine()) {
+                String linha = leitor.nextLine();
+                String[] partes = linha.split(",");
+                if(partes.length == 2) {
+                    String descricao = partes[0];
+                    int qtd = Integer.parseInt(partes[1]);
+                    Produto p = new Produto();
+                    p.setDescricao(descricao);
+                    p.setQuantidade(qtd);
+                    minhaPilha.push(p);
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Dados carregados com sucesso!");
+        }catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Arquivo não encontrado!");
+        }
+    }
     
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-       Produto meuProduto = new Produto();
-       meuProduto.setDescricao(txtProduto.getText());
-       meuProduto.setQuantidade(Integer.parseInt( txtQtd.getText()));// Convertendo String em Inteiro 
-       minhaPilha.push(meuProduto);
-       mostraPilha(minhaPilha, listAux);
-               
+        Produto meuProduto = new Produto();
+        meuProduto.setDescricao(txtProduto.getText());
+        meuProduto.setQuantidade(Integer.parseInt(txtQtd.getText()));
+        
+        minhaPilha.push(meuProduto);
+        mostraPilha(minhaPilha, listPilha);
+        txtProduto.setText("");
+        txtQtd.setText("");
+        salvar();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         Produto p;
+        boolean existe = false;
         while(!minhaPilha.isEmpty()){
           p = minhaPilha.peek();
           if(p.getDescricao().equals(txtProduto.getText())){
-            p = minhaPilha.pop();
-            if(p.getQuantidade() > Integer.parseInt(txtQtd.getText())){
-                JOptionPane.showMessageDialog(null, "Produto removido.");
-            }else{
-                
-            } 
-              
-            
-             //for < = decrementa do p.getQtd a quantidade da caixa de texto
-              // e devolve - push(p)
+              p = minhaPilha.pop();
+              existe = true;
               JOptionPane.showMessageDialog(null, "Encontrado");
+              if(Integer.parseInt(txtQtd.getText()) >= p.getQuantidade()) {
+                  JOptionPane.showMessageDialog(null, "Produto removido.");
+              }else {
+                  p.setQuantidade(p.getQuantidade() - Integer.parseInt(txtQtd.getText()));
+                  minhaPilha.push(p);
+              }
               mostraPilha(minhaPilha, listPilha);
-              //break;
-          }// fim if equals
+              break;
+          }
           else{
-              // MOVER PARA PILHA AUXILIAR
-              pilhaAuxiliar.push(minhaPilha.pop());
-              JOptionPane.showMessageDialog(rootPane, "Movido para auxiliar: ");
+              pilhaAuxiliar.push(minhaPilha.pop()); 
               mostraPilha(minhaPilha, listPilha);
               mostraPilha(pilhaAuxiliar, listAux);
-          }// fim else remove 
-        }// fim while isEmpty    
+          } 
+        }    
         
+        if(!existe) {
+            JOptionPane.showMessageDialog(null, "Produto nao encontrado!");
+        }
+        
+        while(!pilhaAuxiliar.isEmpty()) {
+            minhaPilha.push(pilhaAuxiliar.pop());
+            mostraPilha(minhaPilha, listPilha);
+            mostraPilha(pilhaAuxiliar, listAux);
+        }
         // devolve da aux para principal
+        
+        salvar();
+        txtProduto.setText("");
+        txtQtd.setText("");
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     /**

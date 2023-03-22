@@ -7,9 +7,9 @@ package javapalletscontrol;
 
 /**
  *
- * @author Gabriel Caproni Pegoraro
+ * @author mefma
  */
-public class JavaPallet {
+public class App {
 
     /**
      * @param args the command line arguments

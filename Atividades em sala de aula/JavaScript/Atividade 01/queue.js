@@ -33,4 +33,8 @@ class Fila{
     first(){
         return this.itens[0];
     }
+
+    last(){
+        return this.itens[this.itens.length - 1];
+    }
 }// Fim classe

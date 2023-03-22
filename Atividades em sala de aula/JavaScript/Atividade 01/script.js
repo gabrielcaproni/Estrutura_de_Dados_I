@@ -27,11 +27,29 @@ function addFila(){
             alert("Fila vazia!");
 
         }else{
+
             let retorno = minhaFila.dequeue();
             alert("Valor removido: " + retorno);
             mostrarFila(); 
         }
-
     }
+
+    function ultimoFila(){
+        if(minhaFila.isEmpty()){
+            alert("A fila está vazia !");
+        }else{
+            alert("O ultimo da fila é: " + minhaFila.last());
+        }
+    }
+
+    function primeiroFila(){
+        if(minhaFila.isEmpty()){
+            alert("Fila vazia");
+        }else{
+            alert("O primeiro elemento é: " + minhaFila.first());
+        }
+    }
+
+    
 
 

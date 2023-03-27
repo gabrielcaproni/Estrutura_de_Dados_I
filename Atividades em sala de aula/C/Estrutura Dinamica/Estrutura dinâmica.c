@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stlib.h>
 
 typedef struct{
 	int x;
@@ -58,7 +59,7 @@ int isEmpty(tPilha p){
 
 void mostraPilha(tPilha p){
 	while(p.topo!=NULL){
-		printf("[%d, %d]", p.topo->dado.x, p.topo->dado.y);
+		printf("(%x) [%d, %d] -> %x ", p.topo->dado.x, p.topo->dado.y, p.topo->prox);
 		p.topo = p.topo->prox; // Desce para o prox
 	}// Fim while
 	printf("/n");
@@ -69,7 +70,7 @@ void mostraPilha(tPilha p){
 
 int menu(){
 	int op;
-	printf("*** Estrutura de Dados I - Pilha Estatica ****\n");
+	printf("\n*** Estrutura de Dados I - Pilha Estatica ****");
 	printf("1-Push (Inserir)\n");
 	printf("2-Pop (Remover)\n");
 	printf("3-Peek (Olhar Topo)\n");
@@ -112,7 +113,7 @@ int main(){
 					}
 					else
 						printf("Pilha vazia\n");*/
-				break;							
+				break;		
 		}// fim switch
 	    getch();// pausa
 		system("cls");// limpa tela	

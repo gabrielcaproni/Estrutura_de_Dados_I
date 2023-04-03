@@ -6,6 +6,12 @@
     const novoNome = document.getElementById("txtNovoNome");
     const novoCpf = document.getElementById("txtNovoCpf");
     // Verificar se tem algo digitado e mostrar mensagem se necessário
+
+    if(novoNome.value == "" || novoCpf.value == ""){
+        alert("Preencha todos os campos! ");
+        return;
+    }
+
     const novoAtendimento = new Atendimento;
     novoAtendimento.nome = novoNome.value;
     novoAtendimento.cpf = novoCpf.value;
@@ -13,36 +19,54 @@
     novoAtendimento.hora = obterHoraAtual();
 
     if(!minhaFila.enqueue(novoAtendimento)){
+      console.log(minhaFila.toString());
          alert("A fila está cheia ! ");
     }else{
       alert("Dados iseridos com sucesso. ");
       mostrarFila();
     }
-    // adicionar na fila e mostrar na tela
  }
 //--------------------------------------------------------------------------------------------
  // Função para remover o primeiro elemento da fila
  function realizarAtendimento() {
-    // verificar se não está vazia antes de atender
-    // mostrar dados da pessoa atendida utilizando a funcao mostrarMensagemRemocao
-    
+        if(minhaFila.isEmpty())
+        alert("Fila vazia");
+        else{
+          let retorno = minhaFila.dequeue();
+          mostrarMensagemRemocao(retorno);
+          mostrarFila();
+          
+        }   
  }
  //--------------------------------------------------------------------------------
  function buscarCpf() {
+
+    let pos = 0;
+    let existe = false;
+
     const cpf = document.getElementById("txtNovoCpf").value.trim(); // o trim retira os espaços em branco
     const atendimento = new Atendimento(null,cpf); // vamos pesquisar só por CPF
+    atendimento.cpf = cpf;
     // para cada elemento da fila, verificar com o equals
     // Deve retornar a posição na fila e caso não seja encontrado avisar, crie um contador de posicões
-    for (let item of minhaFila.items) { // para cada elemento da fila
-      if (item.equals(atendimento)) 
-        alert("Achou! Posição: " );
-    }
+    for (let item of minhaFila.itens) { // para cada elemento da fila
+      if (item.equals(atendimento)){
+        alert("Achou! Posição: " + (pos +1 ));
+        existe = true;
+      }else {
+        pos++;
+      }
+  }
+      if(!existe){
+        alert("Atendimento não foi encontrado! ");
+      }
+  
    // se nao encontrar mostre mensagem
-}
+  }
 //--------------------------------------------------------------------------------------------
 function mostrarMensagemRemocao(pessoaAtendida) {
     const lblMensagemRemocao = document.getElementById("lblMensagemRemocao");
-    lblMensagemRemocao.innerHTML ="Próximo a ser atendido(a): "+ pessoaAtendida.nome;
+    lblMensagemRemocao.innerHTML ="Próximo a ser atendido(a): "+ pessoaAtendida.nome + ", chegou as "+ pessoaAtendida.hora + ", está sendo atendida às " + obterHoraAtual() + ".";
     lblMensagemRemocao.style.display = "block";
 }
 //--------------------------------------------------------------------------------------------

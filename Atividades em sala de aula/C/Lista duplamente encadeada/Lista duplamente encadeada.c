@@ -35,8 +35,8 @@ tdado removeFirst(tdeque *minhaDeque){
 	minhaDeque->ini = minhaDeque->ini->prox; // removendo, deslocando o apontamento
 	if(minhaDeque->ini == NULL) // era o ultimo elemento
 	   minhaDeque->fim = NULL;
-	//else  
-	    // Alteracao da DEQUE  , o anterior do inicio aponta para NULL
+	else  
+	    minhaDeque->ini->ant = NULL; // Alteracao da DEQUE  , o anterior do inicio aponta para NULL
 	free(aux); // limpando a memoria
 	return retorno; // retorno o dado removido
 }
@@ -58,24 +58,25 @@ void printList(tdeque minhaDeque){
 //-----------------------------
 void printInvertida(tdeque minhaDeque){ // alterar
 	while(minhaDeque.fim != NULL){
-		// percorrer invertida
+		printf("%d -",minhaDeque.fim->dado); // mostra o dado
+		minhaDeque.fim = minhaDeque.fim->ant; // deslocando para o anterior
 	}// fim while
 	printf("\n");
 }
 //-----------------------------
 void mostraEndereco(tdeque minhaDeque){
 	while(minhaDeque.ini != NULL){
-		/*printf("<- %x| %d [%x] | %x ->\n ",
+		printf("<- %x| %d [%x] | %x ->\n ",
 		        minhaDeque.ini->ant, minhaDeque.ini->dado, minhaDeque.ini , minhaDeque.ini->prox); // mostro o dado
-		minhaDeque.ini = minhaDeque.ini->prox; // deslocando para o prox*/
+		minhaDeque.ini = minhaDeque.ini->prox; // deslocando para o prox
 	}// fim while
 	printf("\n");
 }
 //-----------------------------
 int menu(){
 	int op;
-	printf("*** Estrutura de Dados I ***\n");
-	printf("*** Fila Encadeada ***\n");
+	printf("*** Estrutura de Dados I ***\n\n");
+	printf("*** Fila Encadeada ***\n\n");
 	printf("1-Add Fim (Inserir)\n");
 	printf("2-Remove Ini  (Remover)\n");
 	printf("3-Primeiro e ultimo da fila\n");
@@ -93,7 +94,9 @@ int main(){
 	tdeque minhaDeque;
 	inicializa(&minhaDeque);
 	do{
-		printList(minhaDeque);
+		printf("Ini: %x Fim:%x\n", minhaDeque.ini, minhaDeque.fim);
+		//printList(minhaDeque);
+		mostraEndereco(minhaDeque);
 		op = menu();
 		switch(op){
 			case 1: printf("Valor para inserir:");

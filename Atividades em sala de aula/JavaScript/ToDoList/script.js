@@ -27,8 +27,7 @@ function limpaCampos() {
       return;
     }
       const novaTarefa =   
-      new Tarefa(descricao.value,prioridade.value,
-                  obterDataAtual(),obterHoraAtual());  
+      new Tarefa(descricao.value,prioridade.value, obterDataAtual(),obterHoraAtual());  
       minhaLista.addAtIndex(indice.value,novaTarefa);
       mostrarLista(); 
       descricao.value = "";
@@ -41,7 +40,8 @@ function limpaCampos() {
   function adicionarOrdenado() {
     const descricao = document.getElementById("txtnovaTarefa").value.trim();
     const prioridade = document.getElementById("txtnovaPrioridade").value.trim();
-     
+    
+
     if(descricao === "" || prioridade === "") {
       alert("Todos os campos devem ser preenchidos!");
       return; 
@@ -61,17 +61,20 @@ function limpaCampos() {
     else if(novaPrioridade < minhaLista.getFirst().prioridade)
        retorno = minhaLista.addFirst(novaTarefa);
 
-    else if(novaPrioridade < minhaLista.getFirst().prioridade) 
-       retorno = minhaLista.addFirst(novaTarefa);
-
     else{
+      let inserido = false;
       minhaLista.forEach((item) => {
-        if(item.prioridade < novaPrioridade){
+        if(item.prioridade > novaPrioridade && inserido === false){
             retorno = minhaLista.addAtIndex(indice, novaTarefa);
+            inserido = true;
             return;
         }
         indice++;
       });
+      
+      if(!inserido){
+        retorno = minhaLista.addLast();
+      }
     }
     mostrarLista();
     limpaCampos();

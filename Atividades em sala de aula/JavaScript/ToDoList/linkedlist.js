@@ -13,41 +13,45 @@ class Node {
       this.length=0;
     }
 //------------------------------------------------------------  
-    addLast(data) {
-      const newNode = new Node(data);
-      if(newNode===null)
+  addLast(data) {
+    const newNode = new Node(data);
+    if(newNode===null) {
         return false;
+    }
 
-      if (this.head === null) 
-        // Se a lista estiver vazia, o novo nó se torna a cabeça e a cauda
-        this.head = newNode;
-        else {
-        // Caso contrário, adiciona o novo nó à cauda e atualiza a cauda
+   if (this.head === null) {
+       this.head = newNode;
+   }
+    else {
         newNode.prev = this.tail;
         this.tail.next = newNode;
-      }
-      this.tail = newNode;
-      this.length++;
-      return true;
     }
+
+    this.tail = newNode;
+    this.length++;
+    return true;
+  }
 //------------------------------------------------------------  
-    addFirst(data) {
-      console.log("addFirst");
-      const newNode = new Node(data);
-      if(newNode===null)
-        return false;
-      if (this.tail === null) 
-        // Se a lista estiver vazia, o novo nó se torna a cabeça e a cauda
-        this.tail = newNode;
-       else {
-        // Caso contrário, adiciona o novo nó à cabeça e atualiza a cabeça
+  addFirst(data) {
+   console.log("addFirst");
+   const newNode = new Node(data);
+
+   if(newNode===null) {
+       return false;
+   }
+
+   if (this.tail === null) { 
+       this.tail = newNode;
+   }
+    else {
         newNode.next = this.head;
         this.head.prev = newNode;
-      }
-      this.head = newNode;
-      this.length++;
-      return true;
     }
+
+    this.head = newNode;
+    this.length++;
+    return true;
+  }
 
     addAtIndex(posicao, data) { // add posicao
         if(posicao<=0)
@@ -84,6 +88,21 @@ deleteFirst() {
     isEmpty() {
         return this.head === null; 
     }
+//------------------------------------------------------------
+    getFirst() {
+      if(this.isEmpty()) {
+          return null;
+      }
+      return this.head.data;
+  }
+
+//------------------------------------------------------------
+    getLast() {
+        if(this.isEmpty()) {
+           return null;
+   }
+       return this.tail.data;
+  }
 
 //------------------------------------------------------------
     forEach(callback) {

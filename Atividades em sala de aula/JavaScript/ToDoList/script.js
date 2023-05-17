@@ -1,5 +1,20 @@
  // Crie uma instância da lista
  let minhaLista = new LinkedList();
+
+//--------------------------------------------------------------------------------------------
+
+
+ //limpa os campos após inserção
+
+function limpaCampos() {
+  const descricao = document.getElementById("txtnovaTarefa");
+  const prioridade = document.getElementById("txtnovaPrioridade");
+
+  descricao.value = "";
+  prioridade.value = "";
+
+  return;
+}
 //--------------------------------------------------------------------------------------------
  // Função para adicionar um elemento 
  function adicionarElemento() {
@@ -27,30 +42,79 @@
     const descricao = document.getElementById("txtnovaTarefa").value.trim();
     const prioridade = document.getElementById("txtnovaPrioridade").value.trim();
      
+    if(descricao === "" || prioridade === "") {
+      alert("Todos os campos devem ser preenchidos!");
+      return; 
+  }
+
     const novaTarefa = new Tarefa(descricao, prioridade, obterDataAtual(), obterHoraAtual());
-    let indice = 0;
-    let novaPrioridade = parseInt(novaTarefa.prioridade);
+    let indice = 1;
     let retorno = false;
+    let novaPrioridade = parseInt(novaTarefa.prioridade);
+
     if(minhaLista.isEmpty())
        retorno = minhaLista.addFirst(novaTarefa);
-    else if(novaPrioridade >= minhaLista.last().prioridade)
+
+    else if(novaPrioridade >= minhaLista.getLast().prioridade)
        retorno = minhaLista.addLast(novaTarefa);
-    else if(novaPrioridade < minhaLista.first().prioridade)
+
+    else if(novaPrioridade < minhaLista.getFirst().prioridade)
        retorno = minhaLista.addFirst(novaTarefa);
+
+    else if(novaPrioridade < minhaLista.getFirst().prioridade) 
+       retorno = minhaLista.addFirst(novaTarefa);
+
     else{
-      // implementar a insercao ordenada de acordo com a prioridade
+      minhaLista.forEach((item) => {
+        if(item.prioridade < novaPrioridade){
+            retorno = minhaLista.addAtIndex(indice, novaTarefa);
+            return;
+        }
+        indice++;
+      });
     }
-   
- }
+    mostrarLista();
+    limpaCampos();
+    return;
+  }
 //--------------------------------------------------------------------------------------------
  // Função para remover o primeiro elemento da fila
- function removerElemento() {
+ function removerPrimeiroElemento() {
     if(minhaLista.isEmpty()) 
       alert("Lista vazia!");
     else{  
-      // remover e mostrar mensagem de remocao
+      let del = minhaLista.deleteFirst();
+        mostrarMensagemRemocao(del);
+        mostrarLista();
     }
  }
+
+ //--------------------------------------------------------------------------------------------
+
+
+ function mostrarMaisAntiga() {
+  let tarefa = minhaLista.getFirst();
+
+  minhaLista.forEach((item) => {
+      tarefa = comparaTarefasDataHora(tarefa, item);
+  });
+
+  mostrarMensagemPrimeiro(tarefa);
+  return;
+}
+
+//---------------------------------------------------------------------------------------------
+
+function mostraPrimeiro() {
+  if(minhaLista.isEmpty()){
+      alert("Lista vazia!");
+  }
+  else {  
+      let del = minhaLista.deleteFirst();
+      mostrarMensagemPrimeiro(del);
+      minhaLista.addFirst(del);
+  }
+}
 
 //--------------------------------------------------------------------------------------------
 function mostrarMensagemRemocao(tarefaRealizada) {
@@ -60,6 +124,15 @@ function mostrarMensagemRemocao(tarefaRealizada) {
 
   }
 //-------------------------------------------------------------------------------------------- 
+
+function mostrarMensagemPrimeiro(tarefaRealizada) {
+  const mensagem = document.getElementById("mensagem-remocao");
+  mensagem.innerHTML = "Tarefa: "+ tarefaRealizada.descricao + ", criada há " + calcularDiferencaHoras(tarefaRealizada.hora, obterHoraAtual()); // apresentar a mensagem de remoção com dias e horas
+  mensagem.style.display = "block";
+}
+//-------------------------------------------------------------------------------------------- 
+
+
 // Função para atualizar a exibição da fila
  function mostrarLista() {
    const listaElemento = document.getElementById("list_listadeTarefas");

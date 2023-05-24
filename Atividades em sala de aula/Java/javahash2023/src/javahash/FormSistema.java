@@ -6,7 +6,9 @@ import javax.swing.JOptionPane;
 public class FormSistema extends javax.swing.JFrame {
 
     HashMap<String, Pessoa> meuHash = new HashMap<>();
-    
+    LinkedList<Pessoa> minhaLista = new LinkedList<>();
+    ArrayList<String> arrayBusca = new ArrayList<>();
+            
     public FormSistema() {
         initComponents();
         
@@ -186,15 +188,46 @@ public class FormSistema extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
    
+    void carregaDados(){
+        String csvFile = "dados.csv";
+        String line = "";
+        String [] pessoa = null;
+        
+    try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+        while ((line = br.readLine()) != null) {
+            pessoa = line.split(";");
+            Pessoa p = new Pessoa();
+            p.setNome(pessoa[0]);
+            p.setCpf(pessoa[1]);
+            meuHash.put(p.getCpf(), p);
+            minhaLista.add(p);
+            System.out.println(p);
+        }// fim percurso no arquivo
+    } catch (IOException e) {
+        e.printStackTrace();
+        }       
+
+    }
     void mostra(){
-        //implementar 
-        //Mostrar o meuHash do list
+        listHashTable.setText("");
+        if(!meuHash.isEmpty()){
+            for(Map.Entry<String, Pessoa> dado: meuHash.entrySet()){
+                listHashTable.append(dado.getValue() + "\n");
+            }
+        }
     }
        
      
     
     private void btnBuscarhmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarhmActionPerformed
-        
+        Pessoa p;
+        if(!meuHash.isEmpty()){
+            p = meuHash.get(txtCpf.getText());
+            if(p == null)
+                lblPessoa.setText("Notfound");
+            else 
+                lblPessoa.setText(p.getNome());
+        }
             
     }//GEN-LAST:event_btnBuscarhmActionPerformed
 
@@ -203,10 +236,13 @@ public class FormSistema extends javax.swing.JFrame {
         p.setNome(txtNome.getText());
         p.setCpf(txtCpf.getText());
         meuHash.put(p.getCpf(), p);
+        mostra();
+       
     }//GEN-LAST:event_btnAddhmActionPerformed
 
     private void btnCarregaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarregaActionPerformed
-        // TODO add your handling code here:
+        carregaDados();
+        mostra();
     }//GEN-LAST:event_btnCarregaActionPerformed
 
     /**

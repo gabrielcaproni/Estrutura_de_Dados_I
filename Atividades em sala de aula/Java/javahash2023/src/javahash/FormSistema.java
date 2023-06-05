@@ -244,8 +244,7 @@ public class FormSistema extends javax.swing.JFrame {
         carregaDados();
         mostra();
     }//GEN-LAST:event_btnCarregaActionPerformed
-
-    /**
+   /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {

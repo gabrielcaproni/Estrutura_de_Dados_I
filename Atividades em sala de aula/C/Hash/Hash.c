@@ -78,6 +78,7 @@ void printHash(thash v[], int n){
 	}// fim for 
 	printf("\n"); 
 }
+
 //-----------------------
 int menu(){
 int op;

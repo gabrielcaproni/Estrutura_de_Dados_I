@@ -3,13 +3,13 @@
 
 float arrecada(float valor){
 	float r;
-	//printf("Preciso arrecadar %.2f\n",valor); getch();
+	printf("Preciso arrecadar %.2f\n",valor); getch();
 	if(valor <=100){ // caso base
 		return valor;
 	}//fim if
 	valor-=100;
 	r=100+ arrecada(valor/2) + arrecada(valor/2);
-	//printf("Retornando %.2f\n",r); getch();
+	printf("Retornando %.2f\n",r); getch();
 	return r;
 }// fim funcao
 

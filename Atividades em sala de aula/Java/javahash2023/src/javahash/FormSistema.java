@@ -208,6 +208,22 @@ public class FormSistema extends javax.swing.JFrame {
         }       
 
     }
+    
+    void carregaDadosBusca(){
+        String csvFile = "dadosbusca.csv";
+        String line = "";
+        // String[] dados = null;  
+        
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+            while ((line = br.readLine()) != null) {
+                /*for(String s: arrayBusca){
+                    p = meuHash(s)
+                }*/
+            }// fim percurso no arquivo
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     void mostra(){
         listHashTable.setText("");
         if(!meuHash.isEmpty()){

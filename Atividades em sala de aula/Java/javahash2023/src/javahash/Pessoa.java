@@ -45,8 +45,4 @@ public class Pessoa {
     public String toString(){
         return getNome() + ": " + getCpf();
     }
-    
-    
-    
-    
 }
